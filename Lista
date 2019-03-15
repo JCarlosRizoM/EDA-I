@@ -1,0 +1,78 @@
+------------------main.c-----------------------
+#include <stdio.h>
+#include "listaLibros.h"
+
+main(){
+	int res;
+	nodo *lista=NULL, *pivote;
+	res=primero(lista, &pivote);
+	if(res==0){
+		printf("error\n");
+	}
+	while(pivote->sig!=lista){
+		imprimirNodo(pivote);
+	}
+}
+
+----------------listaLibros.h----------------------
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct relojes{
+	char* marca;
+	int tipo;
+	float precio;
+	
+	struct relojes *sig;
+}nodo;
+
+int primero(nodo *lista, nodo **pivote){
+	nodo *aux=lista;
+	if(aux==NULL){
+		return 0;
+	}
+	else{
+		*pivote=lista;
+		return 1;
+	}
+}
+
+void siguiente(nodo *lista, nodo **pivote){
+	nodo *aux=*pivote;
+	aux=aux->sig;
+	*pivote=aux;
+}
+
+nodo* crearNodo(int t, char *m, float pr){
+	nodo *nuevo = (nodo*) malloc(sizeof(nodo));
+	nuevo->tipo=t;
+	nuevo->marca=m;
+	nuevo->precio=pr;
+	nuevo->sig=NULL;
+	return nuevo;
+}
+
+int inserta(nodo *lista, nodo *e, int p){
+	nodo *aux=lista;
+	if(aux!=NULL){
+		int i;
+		for(i=1; i<p; i++){
+			aux=aux->sig;
+		}
+	}
+	else{
+		lista=e;
+		e->sig=e;
+		aux->sig=e;
+	}
+}
+
+void imprimirNodo(nodo *e){
+	if(e->tipo==1){
+		t="Análogico";
+	}
+	else{
+		t="Digital";
+	}
+	printf("%d - %s - %f", e->tipo, e->marca, e->precio);
+}
