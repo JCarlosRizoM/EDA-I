@@ -9,7 +9,7 @@ typedef struct lista{
   struct lista *ant;
 }nodo;
 
-void insertar(nodo **elemento, int i, int p);
+void insertarElemento(nodo *lista, nodo **elemento, int p, int h, int m, int s);
 void eliminar(nodo *lista, nodo **elemento, int p);
 void siguiente(nodo *lista, nodo **pivote);
 void anterior(nodo *lista, nodo **pivote);
@@ -28,7 +28,7 @@ nodo *crearNodo(int h, int m, int s){
   return nuevo;
 }
 
-nodo *inserta(nodo **elemento, int i, int p){
+nodo *insertarNodo(nodo **elemento, int i, int p){
   nodo *aux=*elemento;
   if(primero==NULL){
 	primero=aux;
@@ -44,28 +44,90 @@ nodo *inserta(nodo **elemento, int i, int p){
     }
 }
 
-void eliminar(nodo *lista, nodo **elemento, int p){
-	nodo *aux=primero;
-	nodo *elim, *siguiente;
+void insertarElemento(nodo *lista, nodo **elemento, int p, int h, int m, int s){
+	nodo *aux=lista;
+	aux=primero;
+	nodo *siguiente, *anterior;
 	int i;
-	printf("Seleccione la posicion a eliminar: \n");
-	scanf("%d", &p);
-	if(p>=1){
-		for(i=0 ; i<p-1 ; i++){
+	if((p>=1)&&(p<=4)){
+		for(i=0 ; i<=p-1 ; i++){
 			aux=aux->sig;
+			if(i==p-1){
+				anterior=aux;
+			}
 		}
-		elim=aux->sig;
-		aux->sig=aux->sig->sig;
-		elim=NULL;
-		free(elim);
+		siguiente=aux->sig;
+		aux=ultimo;
+		for(i=4;i>p;i--){
+			aux->hora=aux->ant->hora;
+			aux->min=aux->ant->min;
+			aux->seg=aux->ant->seg;
+			aux=aux->ant;
+		}
+		anterior->sig=siguiente;
+		siguiente->ant=anterior;
+		aux->hora=h;
+		aux->min=m;
+		aux->seg=s;
 	}
 	else if(p==0){
-		aux=primero;
-		elim=aux;
-		aux=aux->sig;
-		ultimo->sig=aux;
-		elim=NULL;
-		free(elim);
+		anterior=ultimo;
+		siguiente=primero;
+		aux=ultimo;
+		for(i=4;i>p;i--){
+			aux->hora=aux->ant->hora;
+			aux->min=aux->ant->min;
+			aux->seg=aux->ant->seg;
+			aux=aux->ant;
+		}
+		anterior->sig=siguiente;
+		siguiente->ant=anterior;
+		aux->hora=h;
+		aux->min=m;
+		aux->seg=s;
+	}
+	else{
+		printf("Posicion no valida.\n\n");
+	}
+}
+
+void eliminar(nodo *lista, nodo **elemento, int p){
+	nodo *aux=lista;
+	aux=primero;
+	nodo *siguiente, *anterior;
+	int i;
+	if((p>=1)&&(p<=4)){
+		for(i=0 ; i<=p-1 ; i++){
+			aux=aux->sig;
+			if(i==p-1){
+				anterior=aux;
+			}
+		}
+		siguiente=aux->sig;
+		while(aux->sig!=ultimo->sig){
+			aux->hora=aux->sig->hora;
+			aux->min=aux->sig->min;
+			aux->seg=aux->sig->seg;
+			aux=aux->sig;
+		}
+		anterior->sig=siguiente;
+		siguiente->ant=anterior;
+		ultimo->hora=0;
+		ultimo->min=0;
+		ultimo->seg=0;
+	}
+	else if(p==0){
+		anterior=ultimo;
+		siguiente=primero;
+		while(aux->sig!=NULL){
+			aux->hora=aux->sig->hora;
+			aux=aux->sig;
+		}
+		anterior->sig=siguiente;
+		siguiente->ant=anterior;
+		ultimo->hora=0;
+		ultimo->min=0;
+		ultimo->seg=0;
 	}
 	else{
 		printf("Posicion no valida.\n\n");
@@ -73,10 +135,14 @@ void eliminar(nodo *lista, nodo **elemento, int p){
 }
 
 void impNodo(nodo *lista, nodo *e){
-  nodo *aux=e;
-  printf("Hora: %d \n", aux->hora);
-  printf("Minutos: %d \n", aux->min);
-  printf("Segundos: %d \n\n", aux->seg);
+  if(e!=NULL){
+  	printf("Hora: %d \n", e->hora);
+  	printf("Minutos: %d \n", e->min);
+	printf("Segundos: %d \n\n", e->seg);	
+  }
+  else{
+  	printf("No hay lista existente. \n");
+  }
 }       
 
 void siguiente(nodo *lista, nodo **pivote){
