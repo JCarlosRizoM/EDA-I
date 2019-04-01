@@ -18,7 +18,7 @@ int main(){
     elemento=crearNodo(hora[i], min[i], seg[i]);
     lista=insertarNodo(&elemento,i,p);
   }
-/*--------------------------------------------Función Insertar---------------------------------*/
+/*-----------------------------------------------------------Función Insertar------------------------------------------------------*/
   insertarElemento(lista, &elemento,p,hora2[p], min2[p], seg2[p]);
   for(i=0;i<5;i++){
     siguiente(lista, &elemento);
@@ -34,7 +34,7 @@ int main(){
     anterior(lista, &elemento);
 	impNodo(lista, elemento);
   }
-  /*----------------------Descomentar esta sección de código para poner en funcionamiento la función eliminar----------------*
+  /*----------------------Descomentar esta sección de código para poner en funcionamiento la función eliminar----------------------*
   eliminar(lista, &elemento, p);
   for(i=0;i<5;i++){
     siguiente(lista, &elemento);
